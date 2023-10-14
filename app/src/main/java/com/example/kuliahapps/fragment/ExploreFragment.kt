@@ -1,7 +1,6 @@
 package com.example.kuliahapps.fragment
 
 import android.content.Intent
-import android.graphics.Movie
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -26,19 +25,17 @@ class ExploreFragment : Fragment() {
     private lateinit var adapter: MovieAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var movieArrayList: ArrayList<Moviev>
-    private val originalMovieList = ArrayList<Moviev>() // Menyimpan daftar asli
-    private lateinit var searchView: SearchView // Ini baru ditambahkan
+    private lateinit var originalMovieList: ArrayList<Moviev> // Menyimpan daftar asli
+    private lateinit var searchView: SearchView
     private lateinit var image: Array<Int>
     private lateinit var title: Array<String>
     private lateinit var descriptions: Array<String>
     private var lastSearchQuery: String? = null
-    private val lastFilteredList = ArrayList<Moviev>()
-
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_explore, container, false)
     }
@@ -47,9 +44,9 @@ class ExploreFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         dataInitialize()
-
+        val layoutManager = LinearLayoutManager(context)
         recyclerView = view.findViewById(R.id.rv_movie)
-        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
 
         adapter = MovieAdapter(movieArrayList) {
@@ -63,7 +60,7 @@ class ExploreFragment : Fragment() {
         searchView = view.findViewById(R.id.search)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
+                return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
@@ -77,48 +74,48 @@ class ExploreFragment : Fragment() {
         movieArrayList = ArrayList()
 
         image = arrayOf(
-            R.drawable.arsenal,
-            R.drawable.brentford,
-            R.drawable.brighton,
-            R.drawable.chelsea,
-            R.drawable.crystalpalace,
-            R.drawable.everton,
-            R.drawable.liverpool,
-            R.drawable.manchesterunited,
-            R.drawable.manchestercity,
-            R.drawable.newcastleunited,
-            R.drawable.nottinghamforest,
-            R.drawable.stanley
+                R.drawable.arsenal,
+                R.drawable.brentford,
+                R.drawable.brighton,
+                R.drawable.chelsea,
+                R.drawable.crystalpalace,
+                R.drawable.everton,
+                R.drawable.liverpool,
+                R.drawable.manchesterunited,
+                R.drawable.manchestercity,
+                R.drawable.newcastleunited,
+                R.drawable.nottinghamforest,
+                R.drawable.stanley
         )
 
         title = arrayOf(
-            getString(R.string.arsenal),
-            getString(R.string.brighton),
-            getString(R.string.brentford),
-            getString(R.string.chelsea),
-            getString(R.string.palace),
-            getString(R.string.everton),
-            getString(R.string.liverpool),
-            getString(R.string.united),
-            getString(R.string.city),
-            getString(R.string.newcastle),
-            getString(R.string.forest),
-            getString(R.string.stanley)
+                getString(R.string.arsenal),
+                getString(R.string.brighton),
+                getString(R.string.brentford),
+                getString(R.string.chelsea),
+                getString(R.string.palace),
+                getString(R.string.everton),
+                getString(R.string.liverpool),
+                getString(R.string.united),
+                getString(R.string.city),
+                getString(R.string.newcastle),
+                getString(R.string.forest),
+                getString(R.string.stanley)
         )
 
         descriptions = arrayOf(
-            getString(R.string.arsenal),
-            getString(R.string.brighton),
-            getString(R.string.brentford),
-            getString(R.string.chelsea),
-            getString(R.string.palace),
-            getString(R.string.everton),
-            getString(R.string.liverpool),
-            getString(R.string.united),
-            getString(R.string.city),
-            getString(R.string.newcastle),
-            getString(R.string.forest),
-            getString(R.string.stanley)
+                getString(R.string.arsenal),
+                getString(R.string.brighton),
+                getString(R.string.brentford),
+                getString(R.string.chelsea),
+                getString(R.string.palace),
+                getString(R.string.everton),
+                getString(R.string.liverpool),
+                getString(R.string.united),
+                getString(R.string.city),
+                getString(R.string.newcastle),
+                getString(R.string.forest),
+                getString(R.string.stanley)
         )
 
         for (i in image.indices) {
@@ -126,8 +123,8 @@ class ExploreFragment : Fragment() {
             movieArrayList.add(movie)
         }
 
-        // Simpan daftar asli sebelum filter , buat penampung dulu
-        originalMovieList.addAll(movieArrayList)
+        // Simpan daftar asli sebelum filter
+        originalMovieList = ArrayList(movieArrayList)
     }
 
     private fun filter(query: String?) {
@@ -136,19 +133,15 @@ class ExploreFragment : Fragment() {
         if (!query.isNullOrEmpty()) {
             val searchText = query.toLowerCase(Locale.getDefault())
             for (item in originalMovieList) {
-                if (item.titleMovie.toLowerCase(Locale.getDefault()).contains(searchText) &&
-                        !filteredList.contains(item)) {
+                if (item.titleMovie.toLowerCase(Locale.getDefault()).contains(searchText)) {
                     filteredList.add(item)
                 }
             }
         } else {
+            // Jika query kosong, tampilkan daftar asli
             filteredList.addAll(originalMovieList)
         }
+
         adapter.setData(filteredList)
     }
 }
-
-
-
-
-

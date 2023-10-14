@@ -13,7 +13,7 @@ class GaleryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_subscription, container, false)
+        return inflater.inflate(R.layout.fragment_galery, container, false)
     }
 
 }
